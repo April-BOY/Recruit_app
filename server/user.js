@@ -30,6 +30,8 @@ Router.post('/register',(req,res)=>{
     // console.log(req.body);
     let {user,pwd,type} = req.body;
     // ! 为什么过滤条件_filter写在这个位置？
+    //￥ 这是mongodb的过滤查询：属性过滤 find(Conditions,field,callback);
+    //￥ 整理来源：http://cw.hubwiz.com/card/c/543b2e7788dba02718b5a4bd/1/3/2/
     User.findOne({user},_filter,(err,doc)=>{
         if(doc){
             return res.json({code:1,msg:"用户名已被注册"});
