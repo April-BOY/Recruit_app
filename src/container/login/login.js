@@ -40,7 +40,7 @@ class Login extends React.Component{
         return(
             <div>
                 {/* 如果登录成功，则跳转到指定的页面，否则，则不进行操作 */}
-                {this.props.redirectTo?<Redirect to="this.props.redirectTo"></Redirect>:null}
+                {this.props.redirectTo?<Redirect to={this.props.redirectTo}></Redirect>:null}
                 <Logo></Logo>
                 <WingBlank>
                     <List>

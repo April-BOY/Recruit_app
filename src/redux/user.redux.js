@@ -4,7 +4,8 @@ const AUTH_SUCCESS = 'AUTH_SUCCESS';
 const ERROR_MSG = 'ERROR_MSG';
 const initState = {
     user:'',
-    pwd:'',
+    //! 因为会在redux开发者工具中看到用户的密码，所以，要在这里屏蔽
+    // pwd:'',
     type:'',
     redirectTo:''
 };
@@ -75,7 +76,7 @@ export function register({user,pwd,repeatpwd,type}){
     }
    return dispatch=>{
         axios.post('/user/register',{user,pwd,type})
-        .then((req,res)=>{
+        .then(res=>{
             if(res.status==200&&res.data.code==0){
                 dispatch(authSuccess(res.data.data));
             }else{
