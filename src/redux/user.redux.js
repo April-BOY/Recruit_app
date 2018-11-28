@@ -111,3 +111,21 @@ export function authControl(){
             });
     }
 }
+
+/**
+* ! (1)接收用户在信息完善页的信息填入的信息
+* ! (2)更新当前redux的state
+* !     (结合后台来看，就是用后台返回的数据更新当前redux的state.不结合后台，则是直接用用户输入的信息更新当前redux的state)
+* ! (3)将信息存入数据库中
+
+* ! 这个思路可以用来理解其他的动作生成器的操作
+* *
+*/
+export function update(data){
+    return dispatch=>{
+        axios.post('user/update',data)
+        .then(res=>{
+            console.log(res.data);
+        });
+    }
+}

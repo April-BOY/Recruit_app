@@ -80,6 +80,12 @@ Router.get('/info',(req,res)=>{
     });
 });
 
+// 将用户的信息完善页输入的信息存入数据库中
+Router.post('/update',(req,res)=>{
+    console.log(req.body);
+    res.json({code:1});
+})
+
 function md5Pwd(pwd){
     // 加盐
     const salt = "fae87982030)()()***7**^%&^！@";
