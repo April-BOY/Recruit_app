@@ -41,6 +41,8 @@ Router.post('/register',(req,res)=>{
             if(err){
                 return res.json({code:1,msg:"后台出错了"});
             }
+            // cookie是cookie-parser提供的方法，用于将用户信息写入cookie中
+            res.cookie('userid',doc._id);
             // ! 这里响应的数据可以在浏览器的 Network 面板中查看
             return res.json({code:0,data:doc});
         });
@@ -55,9 +57,26 @@ Router.post('/login',(req,res)=>{
     pwd = md5Pwd(pwd);
     User.findOne({user},_filter,(err,doc)=>{
         if(!doc){
-            res.json({code:1,msg:"用户名或密码错误"});
+           return res.json({code:1,msg:"用户名或密码错误"});
         }
+        res.cookie('userid',doc._id);
         return res.json({code:0,data:doc});
+    });
+});
+
+// 处理cookie的接口
+Router.get('/info',(req,res)=>{
+    const {userid} = req.cookies;
+    if(!userid){
+       return res.json({code:1});
+    }
+    User.findOne({_id:userid},_filter,(err,doc)=>{
+        if(err){
+           return res.json({code:1,msg:"后台出错了"});
+        }
+        if(doc){
+            return res.json({code:0,data:doc});
+        }
     });
 });
 

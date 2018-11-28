@@ -1,7 +1,10 @@
 import axios from 'axios';
-import {getRedirectPath} from '../util.js'
+import {getRedirectPath} from '../util.js';
+import {push} from 'react-router-redux';
+
 const AUTH_SUCCESS = 'AUTH_SUCCESS';
 const ERROR_MSG = 'ERROR_MSG';
+const LOAD_DATA = 'LOAD_DATA';
 const initState = {
     user:'',
     //! 因为会在redux开发者工具中看到用户的密码，所以，要在这里屏蔽
@@ -27,6 +30,8 @@ export default function user(state=initState,action){
         case ERROR_MSG:
         // 如果是执行返回错误信息的动作，则返回动作生成器中的得到的错误信息
             return {...state,msg:action.msg}
+        case LOAD_DATA:
+            return {...state,...action.payload,msg:''}
         default:
             return state;
     }
@@ -84,4 +89,25 @@ export function register({user,pwd,repeatpwd,type}){
             }
         });
    }
+}
+
+function loadData(data){
+    return {type:LOAD_DATA,payload:data};
+}
+// 对login或者register以外的路由，进行权限控制
+export function authControl(){
+    return dispatch=>{
+        // 通过/info接口，判断当前用户的cookie是否在数据库中存在
+        axios.get('/user/info')
+            .then(res=>{
+                if(res.data.code==0){
+                    // 有登录信息，该去哪里去哪里
+                    dispatch(loadData(res.data.data));
+                }else{
+                    // 没有登录信息，路由跳转到登录页面
+                    // this.props.history.push('/login');
+                    dispatch(push('/login'));
+                }
+            });
+    }
 }

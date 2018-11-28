@@ -70,9 +70,9 @@ class Register extends React.Component{
                             onChange={()=>{this.handleChange('type','boss')}}>BOSS</RadioItem>
                     </List>
                     <WhiteSpace></WhiteSpace>
-                    <Button type="primary" onClick={this.handleLogin}>登录</Button>
-                    <WhiteSpace></WhiteSpace>
                     <Button type="primary" onClick={this.register}>注册</Button>
+                    <WhiteSpace></WhiteSpace>
+                    <Button type="primary" onClick={this.handleLogin}>登录</Button>
                 </WingBlank>
             </div>
         )
