@@ -6,6 +6,7 @@ import {push} from 'react-router-redux';
 const AUTH_SUCCESS = 'AUTH_SUCCESS';
 const ERROR_MSG = 'ERROR_MSG';
 const LOAD_DATA = 'LOAD_DATA';
+const LOGOUT = 'LOGOUT';
 const initState = {
     user:'',
     //! 因为会在redux开发者工具中看到用户的密码，所以，要在这里屏蔽
@@ -33,6 +34,9 @@ export function user(state=initState,action){
             return {...state,msg:action.msg}
         case LOAD_DATA:
             return {...state,...action.payload,msg:''}
+        case LOGOUT:
+        // 退出登录的操作：将state置为初始状态
+            return {...initState,redirectTo:'/login'}
         default:
             return state;
     }
@@ -133,4 +137,9 @@ export function update(data){
            }
         });
     }
+}
+
+// 退出登录
+export function logoutSubmit(){
+    return {type:LOGOUT}
 }
