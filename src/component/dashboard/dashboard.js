@@ -1,3 +1,4 @@
+// 牛人列表、公司列表、消息列表、个人中心、底部标签导航栏的容器组件
 import React from 'react';
 import {NavBar} from 'antd-mobile';
 import Boss from '../boss/boss';
