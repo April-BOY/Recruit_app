@@ -12,6 +12,7 @@ import Register from "./container/register/register.js";
 import BossInfo from './container/bossinfo/bossinfo.js';
 import GeniusInfo from './container/geniusinfo/geniusinfo.js';
 import Authroute from "./component/authroute/authroute.js";
+import DashBoard from './component/dashboard/dashboard.js';
 import "./index.css";
 //! 在index.js 中引入配置文件，这样，项目中凡是有axios实现的请求和响应都会使用这个配置文件
 import "./config";
@@ -38,6 +39,7 @@ ReactDOM.render(
           <Route path="/register" component={Register} />
           <Route path="/bossinfo" component={BossInfo} />
           <Route path="/geniusinfo" component={GeniusInfo} />
+          <Route component={DashBoard} />
         </Switch>
       </div>
     </Router>

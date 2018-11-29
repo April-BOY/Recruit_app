@@ -39,6 +39,7 @@ class GeniusInfo extends React.Component{
                 {/*! handleSelectAvatar不加圆括号的原因是：这个函数是传给avatarselect.js使用的，不需要在这里执行
                     而下面的handleChange是需要实时执行修改state的值的，所以，需要加圆括号调用
                 */}
+                {/* 父子组件传值 */}
                 <AvatarSelect selectAvatar={this.handleSelectAvatar}></AvatarSelect>
                 <List>
                     <InputItem onChange={(v)=>{this.handleChange('title',v)}}>求职岗位</InputItem>

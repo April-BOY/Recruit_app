@@ -1,3 +1,4 @@
+// ! 单个用户的reducer，即单个用户的表，获取的数据只是单个用户的
 import axios from 'axios';
 import {getRedirectPath} from '../util.js';
 import {push} from 'react-router-redux';
@@ -13,7 +14,7 @@ const initState = {
     redirectTo:''
 };
 
-export default function user(state=initState,action){
+export function user(state=initState,action){
     switch (action.type) {
         case AUTH_SUCCESS:
         /**

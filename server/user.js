@@ -17,11 +17,19 @@ const _filter = {'pwd':0,'__v':0};
 
 //! 用于辅助自己开发使用的接口，比如：查看数据库中所有的数据，删除数据库中所有的数据
 Router.get('/list',(req,res)=>{
-    User.find({},(err,doc)=>{
+    // 获取路由中传过来的参数type
+    const {type} = req.query;
+    // ES5的写法：User.find({type:type},(err,doc)=>{
+    //* 因为chatuser.redux.js中的getUserList()需要根据用户类型查找信息，所以，改造成如下形式 
+    User.find({type},_filter,(err,doc)=>{
         res.json({code:0,data:doc});
     });
+    //* 原本的辅助开发的接口：查看user表中所用用户的内容
+    // User.find({},(err,doc)=>{
+    //     res.json({code:0,data:doc});
+    // });
 });
-
+// 清空user表中的数据
 Router.get('/remove',(req,res)=>{
     User.remove({},()=>{});
 });
