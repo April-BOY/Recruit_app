@@ -16,3 +16,9 @@ export function getRedirectPath({type,avatar}){
    }
    return url;
 }
+
+
+// 将聊天的两个人的id合成一个id，便于查找聊天的记录
+export function getChatId(userId,targetId){
+
+}
