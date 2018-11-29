@@ -1,11 +1,12 @@
 import React from 'react';
 import {NavBar,List,Button,InputItem,TextareaItem} from 'antd-mobile';
 import AvatarSelect from '../../component/avatarselect/avatarselect.js';
+import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {update} from '../../redux/user.redux';
 
 @connect(
-    null,
+    state=>state.user,
     {update}
 )
 class GeniusInfo extends React.Component{
@@ -29,8 +30,11 @@ class GeniusInfo extends React.Component{
         });
     }
     render(){
+        const redirect = this.props.redirectTo;
+        const path = this.props.location.pathname;
         return (
             <div>
+                {redirect&&(redirect!==path)?(<Redirect to={redirect}></Redirect>):null}
                 <NavBar mode="dark">牛人完善信息首页</NavBar>
                 {/*! handleSelectAvatar不加圆括号的原因是：这个函数是传给avatarselect.js使用的，不需要在这里执行
                     而下面的handleChange是需要实时执行修改state的值的，所以，需要加圆括号调用

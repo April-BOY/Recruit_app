@@ -80,10 +80,22 @@ Router.get('/info',(req,res)=>{
     });
 });
 
-// 将用户的信息完善页输入的信息存入数据库中
+// 将用户的信息完善页输入的信息存入数据库中,即在用户原有的信息(用户名，密码)上添加新的信息
 Router.post('/update',(req,res)=>{
-    console.log(req.body);
-    res.json({code:1});
+    // console.log(req.body);req.body获取的数据包括：头像、岗位、个人简历这三项内容
+    const {userid} = req.cookies;
+    if(!userid){
+        return res.json({code:1,msg:"用户不存在"});
+    }
+    User.findByIdAndUpdate(userid,req.body,(err,doc)=>{
+        // !这里的assign函数<==>扩展运算符.第一个{}表示一个空对象，扩展后的内容将会存入这个对象中，并将这个对象返回.
+        // ! 所以，最终data将得到一个对象：{user,type,avatar,title,desc}
+        const data = Object.assign({},{
+            user:doc.user,
+            type:doc.type
+        },req.body);
+        return res.json({code:0,data});
+    });
 })
 
 function md5Pwd(pwd){
