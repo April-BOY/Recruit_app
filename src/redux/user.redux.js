@@ -8,6 +8,7 @@ const ERROR_MSG = 'ERROR_MSG';
 const LOAD_DATA = 'LOAD_DATA';
 const LOGOUT = 'LOGOUT';
 const initState = {
+    // 用户名
     user:'',
     //! 因为会在redux开发者工具中看到用户的密码，所以，要在这里屏蔽
     // pwd:'',
@@ -21,9 +22,11 @@ export function user(state=initState,action){
         /**
         * * action是一个对象
         * ! ...action.payload?
-        * ￥ return {...state,...action.payload,msg:''} 表示
-        * ￥ reutrn { ...state <==> user:'新值',type:'新值',redirectTo:'新值'
+        * ￥ return {...state,...action.payload,msg:'',redirectTo:getRedirectPath(action.payload)} 表示
+        * ￥ reutrn { ...state 表示要对state这个对象进行扩展，即修改里面的属性或者加入新的属性
         * ￥ ...action.payload:这个写法表示只扩展action对象的payload属性过来,扩展后得到的是一个对象
+        * ￥ msg:'':因为state对象原本没有msg这个属性，所以，这里表示给state添加一个新的属性msg
+        * ￥ redirectTo:getRedirectPath(action.payload)：表示对原有的属性值进行修改，给它赋上新值
         * ￥ 最终就是：{user:'新值',type:'新值',redirectTo:'新值',{},msg:''}
         * * 因为是成功登录的动作，所以，错误信息为空
         * *

@@ -18,6 +18,7 @@ import "./index.css";
 //! 在index.js 中引入配置文件，这样，项目中凡是有axios实现的请求和响应都会使用这个配置文件
 import "./config";
 
+// 在redux中做路由跳转
 const history = createHistory();
 const reduxMiddleware = routerMiddleware(history);
 

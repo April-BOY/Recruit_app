@@ -7,6 +7,7 @@ const utils = require('utility');
 // 导入数据库中的user表
 const model = require('./model');
 const User = model.getModel('user');
+const Chat = model.getModel('chat');
 
 /**
 * ! 过滤掉用户的密码，防止被开发者或其他人看到
@@ -104,6 +105,29 @@ Router.post('/update',(req,res)=>{
         },req.body);
         return res.json({code:0,data});
     });
+})
+
+// 获取消息列表的数据
+Router.get('/getMsgList',(req,res)=>{
+    const {userid} = req.cookies;
+    /**
+    * !  User.find的作用是：获取所有用户的id、用户名和头像
+    * ! 以用户的id作为键，把他们各自的用户名和头像作为值，构建一个对象users
+    * ! 用于在chat.js表中获取目标用户的用户名和头像
+    */
+    User.find({},(err,doc)=>{
+        let users = {};
+        doc.forEach(v=>{
+            users[v._id]={name:v.user,avatar:v.avatar};
+        });
+         // TODO: 查一下MongoDB的find()的$or的用法
+        // Chat.find的作用是：获取消息列表显示时需要的两个用户的id和聊天的内容
+        Chat.find({'$or':[{from:userid},{to:userid}]},(err,doc)=>{
+            if(!err){
+                return res.json({code:0,msgs:doc,users});
+            }
+        });
+    })
 })
 
 function md5Pwd(pwd){
