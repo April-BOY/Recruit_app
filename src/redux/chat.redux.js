@@ -34,7 +34,7 @@ export function getMsgList(){
     return (dispatch,getState)=>{
         axios.get('/user/getMsgList')
             .then(res=>{
-                if(res.data.status===200&&res.data.code===0){
+                if(res.status===200&&res.data.code===0){
                     dispatch(msgList(res.data.msgs,res.data.users));
                 }
             });

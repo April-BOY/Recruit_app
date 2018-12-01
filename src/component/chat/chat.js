@@ -2,6 +2,7 @@ import React from 'react';
 import {NavBar,InputItem,List,Icon} from 'antd-mobile';
 import {getMsgList,sendMsg,recvMsg} from '../../redux/chat.redux';
 import {connect} from 'react-redux';
+import {getChatId} from '../../util';
 
 @connect(
     state=>state,
@@ -38,16 +39,23 @@ class Chat extends React.Component{
     render(){
         // 和用户聊天的那个人的id
         const targetid = this.props.match.params.id;
-        // 需要根据聊天对象进行过滤，因为这里获取到的是所有跟当前用户进行过聊天的记录
-        // 需要过滤成点击某个人进行聊天时，只显示和那个人的聊天记录
-        const chatmsgs = this.props.chat.chatmsgs;
-        const Item = List.Item;
-        //! 获取当前的用户的所有信息，因为state=>state引入了所有的表，所以，这里的user
+         //! 获取当前的用户的所有信息，因为state=>state引入了所有的表，所以，这里的user
         //! 不是指user表中的initState中的属性user，而是指user.redux.js这张表
         const me = this.props.user;
         // 获取跟当前用户聊天的目标用户
-        const to = this.props.chat.users[this.props.match.params.user];
-
+        //! 因为users是一个对象，id用户的id是它里面的属性，这里用到的是[]访问对象的属性的语法
+        const to = this.props.chat.users[targetid];
+        // 需要根据聊天对象进行过滤，因为这里获取到的是所有跟当前用户进行过聊天的记录
+        // 需要过滤成点击某个人进行聊天时，只显示和那个人的聊天记录
+        // const chatmsgs = this.props.chat.chatmsgs;
+        // 过滤
+        const chatmsgs = this.props.chat.chatmsgs.filter(v=>v.chatid==getChatId(me._id,targetid));
+        const Item = List.Item;
+        //! 解决第60行：{to.name}获取不到name属性的问题。
+        // 因为初始化的时候to这个对象是不存在的，只有执行MSG_LIST这个动作之后to才会存在
+        if(!to||!me){
+            return null;
+        }
         return (
             <div id="chat-page">
                 <NavBar mode="dark"
@@ -56,7 +64,7 @@ class Chat extends React.Component{
                             this.props.history.goBack();
                         }}
                 >
-                 {targetid}
+                 {to.name}
                 </NavBar>
                 {
                     chatmsgs.map(v=>(
@@ -68,7 +76,7 @@ class Chat extends React.Component{
                                 extra={<img src={require(`../img/${me.avatar}.png`)} alt="用户的头像" />}
                             >{v.content}</Item>
                         ):(<Item key={v._id}
-                                extra={<img src={require(`../img/${to.avatar}.png`)} alt="用户的头像" />}
+                                thumb={require(`../img/${to.avatar}.png`)}
                         >{v.content}</Item>)
                     ))
                 }
