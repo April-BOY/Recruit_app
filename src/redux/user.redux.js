@@ -71,7 +71,7 @@ export function login({user,pwd}){
     return dispatch =>{
         axios.post('/user/login',{user,pwd})
             .then(res=>{
-                if(res.status==200&&res.data.code==0){
+                if(res.status===200&&res.data.code===0){
                     dispatch(authSuccess(res.data.data));
                 }else{
                     dispatch(errorMsg(res.data.msg));
@@ -90,7 +90,7 @@ export function register({user,pwd,repeatpwd,type}){
    return dispatch=>{
         axios.post('/user/register',{user,pwd,type})
         .then(res=>{
-            if(res.status==200&&res.data.code==0){
+            if(res.status===200&&res.data.code===0){
                 dispatch(authSuccess(res.data.data));
             }else{
                 dispatch(errorMsg(res.data.msg));
@@ -108,7 +108,7 @@ export function authControl(){
         // 通过/info接口，判断当前用户的cookie是否在数据库中存在
         axios.get('/user/info')
             .then(res=>{
-                if(res.data.code==0){
+                if(res.data.code===0){
                     // 有登录信息，该去哪里去哪里
                     dispatch(loadData(res.data.data));
                 }else{
@@ -133,7 +133,7 @@ export function update(data){
     return dispatch=>{
         axios.post('user/update',data)
         .then(res=>{
-           if(res.status==200&&res.data.code==0){
+           if(res.status===200&&res.data.code===0){
                dispatch(authSuccess(res.data.data));
            }else{
                dispatch(errorMsg(res.data.msg));

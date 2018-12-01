@@ -63,10 +63,10 @@ class Register extends React.Component{
                         <InputItem type="password" onChange={(v)=>{this.handleChange('pwd',v)}}>密码</InputItem>
                         <InputItem type="password" onChange={(v)=>{this.handleChange('repeatpwd',v)}}>确认密码</InputItem>
                         <RadioItem
-                            checked={this.state.type=='genius'} 
+                            checked={this.state.type==='genius'} 
                             onChange={()=>{this.handleChange('type','genius')}}>牛人</RadioItem>
                         <RadioItem
-                            checked={this.state.type=='boss'}
+                            checked={this.state.type==='boss'}
                             onChange={()=>{this.handleChange('type','boss')}}>BOSS</RadioItem>
                     </List>
                     <WhiteSpace></WhiteSpace>

@@ -27,7 +27,7 @@ class UserCard extends React.Component{
                                 </Card.Header>
                                 <Card.Body>
                                     {
-                                        v.type=="boss"?(
+                                        v.type==="boss"?(
                                             <div style={{marginBottom:5}}>公司：{v.company}</div>
                                         ):null
                                     }
@@ -35,7 +35,7 @@ class UserCard extends React.Component{
                                         <div key={d} style={{marginBottom:5}}>{d}</div>
                                     ))}
                                     {
-                                        v.type=="boss"?(
+                                        v.type==="boss"?(
                                             <div>薪资待遇：{v.money}</div>
                                         ):null
                                     }

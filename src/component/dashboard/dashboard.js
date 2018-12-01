@@ -8,14 +8,23 @@ import User from '../user/user';
 import NavBarLink from '../navbarlink/navbarlink';
 import {connect} from 'react-redux';
 import {Switch,Route} from 'react-router-dom';
+import {getMsgList,recvMsg} from '../../redux/chat.redux';
 
 @connect(
     // ! 因为这里将全部的state都扩展过来了，所以，在下面使用的时候就需要指明使用哪一个reducer
     // ! 即this.props.user.type=="genius"
-    state=>state
+    state=>state,
+    {getMsgList,recvMsg}
 )
 class DashBoard extends React.Component{
-    
+     // 一进来就获取用户的聊天记录
+     componentDidMount(){
+        // ? 为什么这里不用指明是chat表中的getMsgList()，即写成this.props.chat.getMsgList();
+        // ￥ 因为导入这个方法的时候已经表明是从chat表中导入进来的，所以，这里不用在指明
+        this.props.getMsgList();
+        // 接收socket服务器发送过来的消息
+        this.props.recvMsg();
+    }
     render(){
         const navList = [
             {
@@ -24,7 +33,7 @@ class DashBoard extends React.Component{
                 title:'牛人列表',
                 text:'牛人',
                 icon:'boss',
-                hide:this.props.user.type=="genius"
+                hide:this.props.user.type==="genius"
             },
             {
                 path:'/genius',
@@ -32,7 +41,7 @@ class DashBoard extends React.Component{
                 title:'BOSS列表',
                 text:'boss',
                 icon:'job',
-                hide:this.props.user.type=="boss"
+                hide:this.props.user.type==="boss"
             },
             {
                 path:'/msg',
@@ -51,7 +60,7 @@ class DashBoard extends React.Component{
         ];
         //! 通过路由实现NavBar内容的切换
         const {pathname} = this.props.location;
-        const head = navList.find(v=>v.path==pathname);
+        const head = navList.find(v=>v.path===pathname);
         // console.log(head);
         if(!head){
             return null;

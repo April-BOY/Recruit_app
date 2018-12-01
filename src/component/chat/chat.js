@@ -1,12 +1,12 @@
 import React from 'react';
 import {NavBar,InputItem,List,Icon} from 'antd-mobile';
-import {getMsgList,sendMsg,recvMsg} from '../../redux/chat.redux';
+import {sendMsg,readMsg} from '../../redux/chat.redux';
 import {connect} from 'react-redux';
 import {getChatId} from '../../util';
 
 @connect(
     state=>state,
-    {getMsgList,sendMsg,recvMsg}
+    {sendMsg,readMsg}
 )
 class Chat extends React.Component{
     constructor(){
@@ -16,13 +16,11 @@ class Chat extends React.Component{
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    // 一进来就获取用户的聊天记录
-    componentDidMount(){
-        // ? 为什么这里不用指明是chat表中的getMsgList()，即写成this.props.chat.getMsgList();
-        // ￥ 因为导入这个方法的时候已经表明是从chat表中导入进来的，所以，这里不用在指明
-        this.props.getMsgList();
-        // 接收socket服务器发送过来的消息
-        this.props.recvMsg();
+    // 进入这个页面时，未读消息变为已读
+    componentWillUnmount(){
+        // 获取发消息给当前用户的那个人的id
+        const from = this.props.match.params.id;
+        this.props.readMsg(from);
     }
     handleSubmit(){
         this.props.sendMsg({
@@ -49,7 +47,7 @@ class Chat extends React.Component{
         // 需要过滤成点击某个人进行聊天时，只显示和那个人的聊天记录
         // const chatmsgs = this.props.chat.chatmsgs;
         // 过滤
-        const chatmsgs = this.props.chat.chatmsgs.filter(v=>v.chatid==getChatId(me._id,targetid));
+        const chatmsgs = this.props.chat.chatmsgs.filter(v=>v.chatid===getChatId(me._id,targetid));
         const Item = List.Item;
         //! 解决第60行：{to.name}获取不到name属性的问题。
         // 因为初始化的时候to这个对象是不存在的，只有执行MSG_LIST这个动作之后to才会存在

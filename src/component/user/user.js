@@ -37,7 +37,7 @@ class User extends React.Component{
                 <Result 
                 img={(<img style={{width:50}} src={require(`../img/${this.props.avatar}.png`)} alt="用户个人头像" />)}
                 title={this.props.user}
-                message={this.props.type=="boss"?this.props.company:null}
+                message={this.props.type==="boss"?this.props.company:null}
                 />
                 <List renderHeader={()=>'简介'}>
                     <Item>
@@ -56,6 +56,7 @@ class User extends React.Component{
                 <List>
                     <Item onClick={this.logout}>退出登录</Item>
                 </List>
+                {/* 这里的跳转是执行user.redux.js中的LOGOUT动作 */}
             </div>):(<Redirect to={this.props.redirectTo}></Redirect>)
         )
     }

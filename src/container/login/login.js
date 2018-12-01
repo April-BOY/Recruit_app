@@ -40,7 +40,14 @@ class Login extends React.Component{
         return(
             <div>
                 {/* 如果登录成功，则跳转到指定的页面，否则，则不进行操作 */}
-                {this.props.redirectTo?<Redirect to={this.props.redirectTo}></Redirect>:null}
+                {/* ! 这里原本的判断条件是this.props.redirectTo,这导致了【重复重定向】的问题：
+                    当在用户中心点击退出登录是,user.js中设置了重定向到redirectTo的值为/login
+                    所以，它会跳转到login页面，但是，当跳转到这个页面时，因为redirectTo的值被设置为/login,
+                    所以，this.props.redirectTo就为真,然后，就执行后面的<Redirect to={this.props.redirectTo}></Redirect>
+                    这样，就有跳转了一次，从而，造成了这个【重复重定向】的问题.
+                    因此，我将跳转的条件改为了根据用户是否存在，即用户是否为登录状态。
+                */}
+                {this.props.user?<Redirect to={this.props.redirectTo}></Redirect>:null}
                 <Logo></Logo>
                 <WingBlank>
                     <List>

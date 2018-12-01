@@ -2,8 +2,12 @@
 import React from 'react';
 import {TabBar} from 'antd-mobile';
 import {withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 @withRouter
+@connect(
+    state=>state.chat
+)
 class NavBarLink extends React.Component{
     render(){
         const navList = this.props.data.filter(v=>{
@@ -25,8 +29,8 @@ class NavBarLink extends React.Component{
                             icon={{uri:require(`./img/${v.icon}.png`)}}
                             selectedIcon={{uri:require(`./img/${v.icon}-active.png`)}}
                             //! 通过路由实现是否选中的状态
-                            selected={v.path==pathname}
-                            badge={v.path=="/msg"?12:0}
+                            selected={v.path===pathname}
+                            badge={v.path==="/msg"?this.props.unread:0}
                             onPress={()=>{
                                 this.props.history.push(v.path);
                             }}

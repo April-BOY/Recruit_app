@@ -130,6 +130,23 @@ Router.get('/getMsgList',(req,res)=>{
     })
 })
 
+// 返回消息列表页面时，将未读消息变为已读
+Router.post('/readMsg',(req,res)=>{
+    const {from} = req.body;
+    const {userid} = req.cookies;
+    Chat.update({
+        from:from,
+        to:userid
+        // TODO:查下$set和$multi的具体用法
+        // $set表示只更新一条数据，$multi表示更新多条数据
+    },{'$set':{read:true}},{'multi':true},(err,doc)=>{
+        if(!err){
+            return res.json({code:0,num:doc.nModified})
+        }
+        return res.json({code:1,msg:'修改失败'})
+    })
+})
+
 function md5Pwd(pwd){
     // 加盐
     const salt = "fae87982030)()()***7**^%&^！@";
